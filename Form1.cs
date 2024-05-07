@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Calculator2024 {
@@ -20,6 +21,7 @@ namespace Calculator2024 {
             BackNumber();
             VerifyComma();
             VerifyBack();
+            ThereIsPoint();
         }
 
         private void btn1_Click(object sender, EventArgs e) {
@@ -32,6 +34,7 @@ namespace Calculator2024 {
             BackNumber();
             VerifyComma();
             VerifyBack();
+            ThereIsPoint();
         }
 
         private void btn2_Click(object sender, EventArgs e) {
@@ -44,6 +47,7 @@ namespace Calculator2024 {
             BackNumber();
             VerifyComma();
             VerifyBack();
+            ThereIsPoint();
         }
 
         private void btn3_Click(object sender, EventArgs e) {
@@ -56,6 +60,7 @@ namespace Calculator2024 {
             BackNumber();
             VerifyComma();
             VerifyBack();
+            ThereIsPoint();
         }
 
         private void btn4_Click(object sender, EventArgs e) {
@@ -68,6 +73,7 @@ namespace Calculator2024 {
             BackNumber();
             VerifyComma();
             VerifyBack();
+            ThereIsPoint();
         }
 
         private void btn5_Click(object sender, EventArgs e) {
@@ -80,6 +86,7 @@ namespace Calculator2024 {
             BackNumber();
             VerifyComma();
             VerifyBack();
+            ThereIsPoint();
         }
 
         private void btn6_Click(object sender, EventArgs e) {
@@ -92,6 +99,7 @@ namespace Calculator2024 {
             BackNumber();
             VerifyComma();
             VerifyBack();
+            ThereIsPoint();
         }
 
         private void btn7_Click(object sender, EventArgs e) {
@@ -104,6 +112,7 @@ namespace Calculator2024 {
             BackNumber();
             VerifyComma();
             VerifyBack();
+            ThereIsPoint();
         }
 
         private void btn8_Click(object sender, EventArgs e) {
@@ -116,6 +125,7 @@ namespace Calculator2024 {
             BackNumber();
             VerifyComma();
             VerifyBack();
+            ThereIsPoint();
         }
 
         private void btn9_Click(object sender, EventArgs e) {
@@ -128,6 +138,7 @@ namespace Calculator2024 {
             BackNumber();
             VerifyComma();
             VerifyBack();
+            ThereIsPoint();
         }
 
         private void btnPlus_Click(object sender, EventArgs e) {
@@ -243,7 +254,7 @@ namespace Calculator2024 {
         }
 
         private void btnBack_Click(object sender, EventArgs e) {
-
+            
             txt1.Text = txt1.Text.Remove(txt1.Text.Length - 1);
             textBox1.Text = textBox1.Text.Remove(textBox1.Text.Length - 1);
 
@@ -293,7 +304,36 @@ namespace Calculator2024 {
             txt1.Text += ".";
             textBox1.Text += ".";
             btnP.Enabled = false;
+            btnPlus.Enabled = false;
+            btnMinus.Enabled = false;
+            btnTimes.Enabled = false;
+            btnDivision.Enabled = false;
         }
+
+        public void ThereIsPoint() {
+            
+            if (Type == 0) {
+                
+                if (txt1.Text.Length > 0 || textBox1.Text.Length > 0) {
+                    
+                    if (txt1.Text.Contains(".") || textBox1.Text.Contains("."))                    
+                        btnP.Enabled = false;                    
+                    else                    
+                        btnP.Enabled = true;                    
+                }
+            }
+
+            if (Type == 1) {
+                
+                if (txt1.Text.Length > 0) {
+                    
+                    if (txt1.Text.Contains("."))
+                        btnP.Enabled = false;
+                    else
+                        btnP.Enabled = true;
+                }
+            }
+        }        
 
         private void btnEqual_Click(object sender, EventArgs e) {
 
@@ -326,19 +366,23 @@ namespace Calculator2024 {
             }
             else if (Acc == 3) {
 
-                try {
+                if (double.IsNaN(Num1 / Num2)) {
+
+                    textBox1.Text = $"{Num1} ÷ {Num2} = Indeterminacy...";
+                    txt1.Text = "Indeterminacy...";
+                    vDiv++;
+                    lblDiv.Text = vDiv.ToString();
+                    vTot++;
+                    lblTotal.Text = vTot.ToString();
+                }
+                else {
 
                     txt1.Text = Convert.ToString(Num1 / Num2);
                     textBox1.Text += " = " + Convert.ToString(Num1 / Num2);
                     vDiv++;
                     lblDiv.Text = vDiv.ToString();
                     vTot++;
-                    lblTotal.Text = vTot.ToString();                    
-                }
-                catch (Exception) {
-
-                    txt1.Text = "Syntax error!";
-                    textBox1.Text = "You cannot divide one number by zero (0)...";
+                    lblTotal.Text = vTot.ToString();
                 }
             }
             else if (Acc == 4) {
@@ -548,6 +592,8 @@ namespace Calculator2024 {
         }
 
         public frmCalculator() => InitializeComponent();
+        private void txt1_TextChanged(object sender, EventArgs e) => ThereIsPoint();
+        private void textBox1_TextChanged(object sender, EventArgs e) => ThereIsPoint();
         private void Form1_Load(object sender, EventArgs e) => this.Enabled = true;
         private void btnExit_Click(object sender, EventArgs e) => Application.Exit();
     }
